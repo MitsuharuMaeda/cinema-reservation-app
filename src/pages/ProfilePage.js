@@ -8,7 +8,12 @@ import Button from "../components/Button";
 import { 
   CinemaPageContainer, 
   CinemaContentContainer, 
-  CinemaTitle
+  CinemaTitle,
+  CinemaSubmitButton,
+  CinemaForm,
+  CinemaFormGroup,
+  CinemaLabel,
+  CinemaInput
 } from "../styles/CinemaTheme";
 
 const PageContainer = styled(CinemaPageContainer)``;
@@ -21,37 +26,15 @@ const PageTitle = styled(CinemaTitle)`
   margin-bottom: 30px;
 `;
 
-const ProfileForm = styled.form`
-  background-color: white;
-  padding: var(--spacing-large);
-  border-radius: var(--border-radius);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: #333333;
+const ProfileForm = styled(CinemaForm)`
+  max-width: 100%;
 `;
 
-const FormGroup = styled.div`
-  margin-bottom: var(--spacing-large);
-`;
+const FormGroup = styled(CinemaFormGroup)``;
 
-const Label = styled.label`
-  display: block;
-  font-weight: bold;
-  margin-bottom: var(--spacing-small);
-  color: #333333;
-`;
+const Label = styled(CinemaLabel)``;
 
-const Input = styled.input`
-  width: 100%;
-  padding: var(--spacing-medium);
-  border: 2px solid #ccc;
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-medium);
-  
-  &:focus {
-    border-color: var(--primary-color);
-    outline: none;
-  }
-`;
+const Input = styled(CinemaInput)``;
 
 const ErrorMessage = styled.p`
   color: var(--error-color);
@@ -63,7 +46,7 @@ const SuccessMessage = styled.p`
   margin-top: var(--spacing-small);
 `;
 
-const SubmitButton = styled(Button)`
+const SubmitButton = styled(CinemaSubmitButton)`
   width: 100%;
   margin-top: var(--spacing-medium);
 `;

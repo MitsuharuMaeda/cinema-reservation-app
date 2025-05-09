@@ -74,9 +74,9 @@ const CloseButton = styled.button`
   position: absolute;
   top: 5px;
   right: 5px;
-  background-color: #cc0000;
+  background-color: #8B0000;
   color: white;
-  border: 1px solid #fff;
+  border: 1px solid #FFD700;
   border-radius: 50%;
   width: 24px;
   height: 24px;
@@ -88,7 +88,9 @@ const CloseButton = styled.button`
   z-index: 100;
   
   &:hover {
-    background-color: #aa0000;
+    background-color: #a00000;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   }
 `;
 

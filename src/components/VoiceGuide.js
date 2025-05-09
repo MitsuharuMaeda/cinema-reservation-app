@@ -13,9 +13,9 @@ const VoiceButton = styled.button`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: #6200ee;
+  background-color: #8B0000;
   color: white;
-  border: none;
+  border: 2px solid #FFD700;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,11 +23,13 @@ const VoiceButton = styled.button`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   
   &:hover {
-    background-color: #7722ff;
+    background-color: #a00000;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   }
   
   &:focus {
-    outline: 3px solid #a8c7fa;
+    outline: 3px solid #FFD700;
     outline-offset: 2px;
   }
   
@@ -65,18 +67,19 @@ const VoiceControlButton = styled.button`
   width: 100%;
   padding: 15px;
   margin-bottom: 12px;
-  background-color: #f0f7ff;
-  border: 2px solid #d0e0f7;
+  background-color: #8B0000;
+  border: 2px dashed #FFD700;
   border-radius: 8px;
   text-align: left;
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
-  color: #333333;
+  color: #FFD700;
   
   &:hover {
-    background-color: #e0eeff;
-    border-color: #0066cc;
+    background-color: #a00000;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   }
   
   &:last-child {
@@ -84,7 +87,7 @@ const VoiceControlButton = styled.button`
   }
   
   &:focus {
-    outline: 3px solid #a8c7fa;
+    outline: 3px solid #FFD700;
     outline-offset: 2px;
   }
 `;

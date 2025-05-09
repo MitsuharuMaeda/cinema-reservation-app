@@ -12,7 +12,8 @@ import {
   CinemaContentContainer, 
   CinemaTitle,
   CinemaSectionTitle,
-  CinemaButton
+  CinemaButton,
+  CinemaSubmitButton
 } from "../styles/CinemaTheme";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -120,7 +121,7 @@ const ErrorMessage = styled.p`
   margin-top: var(--spacing-small);
 `;
 
-const SubmitButton = styled(Button)`
+const SubmitButton = styled(CinemaSubmitButton)`
   width: 100%;
   margin-top: var(--spacing-large);
 `;
@@ -140,24 +141,55 @@ const ActionButton = styled.button`
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
-  border: 2px dashed #cc0000;
-  transition: all 0.2s;
+  border: 2px dashed #FFD700;
+  background-color: #8B0000;
+  color: white;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    background: repeating-linear-gradient(
+      45deg,
+      #FFD700,
+      #FFD700 10px,
+      #8B0000 10px,
+      #8B0000 20px
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    background-color: #a00000;
+    
+    &:before {
+      opacity: 0.1;
+    }
+  }
   
   &.confirm {
-    background-color: #cc0000;
-    color: white;
+    background-color: #8B0000;
     
     &:hover {
-      background-color: #aa0000;
+      background-color: #a00000;
     }
   }
   
   &.back {
-    background-color: #333333;
-    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
     
     &:hover {
-      background-color: #555555;
+      background-color: #8B0000;
     }
   }
 `;

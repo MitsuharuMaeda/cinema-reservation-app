@@ -1,34 +1,60 @@
 import styled from "styled-components";
 
 const Button = styled.button`
-  display: inline-block;
-  min-width: 200px;
-  font-size: var(--font-size-medium);
-  padding: var(--spacing-medium) var(--spacing-large);
-  margin: var(--spacing-medium) 0;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  text-align: center;
-  font-weight: bold;
-  transition: background-color 0.3s;
+  background-color: #8B0000;
+  color: #fff;
+  border: 2px dashed #FFD700;
+  border-radius: 8px;
+  padding: 15px 25px;
+  font-size: 18px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  min-width: 180px;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    background: repeating-linear-gradient(
+      45deg,
+      #FFD700,
+      #FFD700 10px,
+      #8B0000 10px,
+      #8B0000 20px
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
   
   &:hover {
-    background-color: var(--secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    background-color: #a00000;
+    
+    &:before {
+      opacity: 0.1;
+    }
+  }
+  
+  &:active {
+    transform: translateY(1px);
   }
   
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.7;
     cursor: not-allowed;
   }
   
   &.secondary {
-    background-color: #666;
+    background-color: rgba(0, 0, 0, 0.6);
     
     &:hover {
-      background-color: #444;
+      background-color: #8B0000;
     }
   }
   

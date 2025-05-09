@@ -60,6 +60,8 @@ const CategoryTabsContainer = styled.div`
   overflow-x: auto;
   margin-bottom: var(--spacing-large);
   -webkit-overflow-scrolling: touch;
+  padding: 0 40px;
+  position: relative;
   
   &::-webkit-scrollbar {
     height: 8px;
@@ -78,7 +80,7 @@ const CategoryTabsContainer = styled.div`
   &::after {
     content: '';
     position: absolute;
-    right: 0;
+    right: 40px;
     top: 0;
     height: 100%;
     width: 30px;
@@ -99,18 +101,50 @@ const CategoryTabs = styled.div`
 
 const CategoryTab = styled.button`
   padding: 10px 20px;
-  background-color: ${props => props.active ? '#cc0000' : '#ffffff'};
-  color: ${props => props.active ? '#ffffff' : '#cc0000'};
-  border: 2px solid #cc0000;
-  border-radius: var(--border-radius);
+  background-color: ${props => props.active ? '#8B0000' : 'rgba(0, 0, 0, 0.6)'};
+  color: ${props => props.active ? '#FFD700' : '#fff'};
+  border: 2px dashed #FFD700;
+  border-radius: 8px;
   cursor: pointer;
   font-size: inherit;
   font-weight: bold;
   flex-shrink: 0;
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    background: repeating-linear-gradient(
+      45deg,
+      #FFD700,
+      #FFD700 10px,
+      #8B0000 10px,
+      #8B0000 20px
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
   
   &:hover {
-    background-color: ${props => props.active ? '#aa0000' : '#ffeeee'};
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    background-color: ${props => props.active ? '#a00000' : '#555'};
+    
+    &:before {
+      opacity: ${props => props.active ? '0.1' : '0'};
+    }
+  }
+  
+  &:active {
+    transform: translateY(1px);
   }
 `;
 
@@ -120,26 +154,28 @@ const ScrollButton = styled.button`
   transform: translateY(-50%);
   width: 30px;
   height: 30px;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
+  background-color: #8B0000;
+  color: #FFD700;
+  border: 2px solid #FFD700;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1;
+  z-index: 10;
   
   &.left {
-    left: 5px;
+    left: 0;
   }
   
   &.right {
-    right: 5px;
+    right: 0;
   }
   
   &:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: #a00000;
+    transform: translateY(calc(-50% - 3px));
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   }
   
   @media (max-width: 768px) {
@@ -201,22 +237,38 @@ const SearchInput = styled.input`
   width: 100%;
   padding: var(--spacing-medium);
   margin-bottom: var(--spacing-large);
-  border: 2px solid #ccc;
+  background-color: #333333;
+  border: 2px solid #FFD700;
   border-radius: var(--border-radius);
   font-size: var(--font-size-medium);
+  color: #fff;
   
   &:focus {
-    border-color: var(--primary-color);
     outline: none;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  }
+  
+  &::placeholder {
+    color: #999;
   }
 `;
 
 const NoResults = styled.div`
   text-align: center;
   padding: var(--spacing-xlarge);
-  background-color: #f8f9fa;
+  background-color: #222;
+  border: 2px solid #FFD700;
   border-radius: var(--border-radius);
-  color: #333333;
+  color: #FFD700;
+  
+  h3 {
+    color: #FFD700;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    color: #fff;
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -524,7 +576,11 @@ function FAQPage() {
               aria-label="質問を検索"
             />
             
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative', marginBottom: '20px' }}>
+              <ScrollButton className="left" onClick={() => scrollTabs('left')}>
+                {'<'}
+              </ScrollButton>
+              
               <CategoryTabsContainer ref={tabsRef} showShadow={showShadow} onScroll={handleScroll}>
                 <CategoryTabs>
                   {faqData.map((category, index) => (
@@ -539,9 +595,6 @@ function FAQPage() {
                 </CategoryTabs>
               </CategoryTabsContainer>
               
-              <ScrollButton className="left" onClick={() => scrollTabs('left')}>
-                {'<'}
-              </ScrollButton>
               <ScrollButton className="right" onClick={() => scrollTabs('right')}>
                 {'>'}
               </ScrollButton>

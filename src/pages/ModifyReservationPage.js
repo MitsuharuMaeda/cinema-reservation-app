@@ -5,27 +5,34 @@ import Button from "../components/Button";
 import SeatSelector from "../components/SeatSelector";
 import { db } from "../firebase/config";
 import { doc, getDoc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { 
+  CinemaPageContainer, 
+  CinemaContentContainer, 
+  CinemaTitle,
+  CinemaButton,
+  CinemaSubmitButton
+} from "../styles/CinemaTheme";
 
-const PageContainer = styled.div`
-  padding: var(--spacing-large) 0;
-`;
+const PageContainer = styled(CinemaPageContainer)``;
 
-const PageTitle = styled.h1`
+const PageTitle = styled(CinemaTitle)`
   text-align: center;
   margin-bottom: var(--spacing-xlarge);
 `;
 
-const BackButton = styled(Button)`
+const BackButton = styled(CinemaButton)`
   margin-bottom: var(--spacing-large);
 `;
 
 const ReservationForm = styled.form`
   max-width: 600px;
   margin: 0 auto;
-  background-color: white;
+  background-color: #222222;
   padding: var(--spacing-large);
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  color: #f0f0f0;
+  border: 2px solid #FFD700;
 `;
 
 const MovieInfo = styled.div`
@@ -62,7 +69,7 @@ const ErrorMessage = styled.p`
   margin-top: var(--spacing-small);
 `;
 
-const SubmitButton = styled(Button)`
+const SubmitButton = styled(CinemaSubmitButton)`
   width: 100%;
   margin-top: var(--spacing-large);
 `;

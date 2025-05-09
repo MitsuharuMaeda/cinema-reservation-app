@@ -11,7 +11,8 @@ import {
   CinemaPageContainer, 
   CinemaContentContainer, 
   CinemaTitle,
-  CinemaButton
+  CinemaButton,
+  CinemaSubmitButton
 } from "../styles/CinemaTheme";
 
 const PageContainer = styled(CinemaPageContainer)``;
@@ -50,11 +51,12 @@ const SearchForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: var(--spacing-medium);
-  background-color: white;
+  background-color: #222222;
   padding: var(--spacing-large);
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: #333333;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  color: #f0f0f0;
+  border: 2px solid #FFD700;
 `;
 
 const InstructionTitle = styled.h3`
@@ -95,17 +97,20 @@ const InputLabel = styled(Label)`
 const Input = styled.input`
   width: 100%;
   padding: var(--spacing-medium);
-  border: 2px solid #ccc;
+  border: 2px solid #FFD700;
   border-radius: var(--border-radius);
   font-size: var(--font-size-medium);
+  background-color: #333333;
+  color: #f0f0f0;
   
   &:focus {
-    border-color: var(--primary-color);
+    border-color: #FFD700;
     outline: none;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
   }
 `;
 
-const SearchButton = styled(Button)`
+const SearchButton = styled(CinemaSubmitButton)`
   margin-top: var(--spacing-small);
 `;
 
@@ -215,23 +220,22 @@ const ActionButtons = styled.div`
   }
 `;
 
-const ActionButton = styled(Button)`
+const ActionButton = styled(CinemaButton)`
   flex: 1;
   font-size: 16px;
   padding: 12px;
   
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   }
 `;
 
 const CancelButton = styled(ActionButton)`
-  background-color: #cc0000;
+  background-color: #8B0000;
   
   &:hover {
-    background-color: #aa0000;
+    background-color: #a00000;
   }
 `;
 
