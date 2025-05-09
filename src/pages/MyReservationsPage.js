@@ -239,6 +239,7 @@ const ModalContent = styled.div`
 
 const ModalTitle = styled.h3`
   margin-bottom: var(--spacing-medium);
+  color: #000000; /* 黒字に設定 */
 `;
 
 const ModalButtons = styled.div`
@@ -246,6 +247,23 @@ const ModalButtons = styled.div`
   justify-content: flex-end;
   gap: var(--spacing-medium);
   margin-top: var(--spacing-large);
+`;
+
+const ModalText = styled.p`
+  color: #000000; /* 黒字 */
+  font-size: 16px;
+  margin-bottom: 10px;
+`;
+
+const ModalTextBold = styled.span`
+  font-weight: bold;
+`;
+
+const ModalTextWarning = styled.p`
+  color: #cc0000; /* 赤字 */
+  font-size: 16px;
+  margin-top: 15px;
+  font-weight: bold;
 `;
 
 function MyReservationsPage() {
@@ -656,11 +674,11 @@ function MyReservationsPage() {
             {modalAction === "cancel" ? (
               <>
                 <ModalTitle>予約キャンセルの確認</ModalTitle>
-                <p>以下の予約をキャンセルしますか？</p>
-                <p><strong>映画:</strong> {selectedReservation.movieTitle}</p>
-                <p><strong>日時:</strong> {formatDate(selectedReservation.date)} {selectedReservation.showtime}</p>
-                <p><strong>枚数:</strong> {selectedReservation.numberOfTickets}枚</p>
-                <p>※キャンセル後の復元はできません。</p>
+                <ModalText>以下の予約をキャンセルしますか？</ModalText>
+                <ModalText><ModalTextBold>映画:</ModalTextBold> {selectedReservation.movieTitle}</ModalText>
+                <ModalText><ModalTextBold>日時:</ModalTextBold> {formatDate(selectedReservation.date)} {selectedReservation.showtime}</ModalText>
+                <ModalText><ModalTextBold>枚数:</ModalTextBold> {selectedReservation.numberOfTickets}枚</ModalText>
+                <ModalTextWarning>※キャンセル後の復元はできません。</ModalTextWarning>
                 <ModalButtons>
                   <Button 
                     className="secondary"
@@ -676,10 +694,10 @@ function MyReservationsPage() {
             ) : (
               <>
                 <ModalTitle>予約変更の確認</ModalTitle>
-                <p>以下の予約を変更しますか？</p>
-                <p><strong>映画:</strong> {selectedReservation.movieTitle}</p>
-                <p><strong>日時:</strong> {formatDate(selectedReservation.date)} {selectedReservation.showtime}</p>
-                <p><strong>枚数:</strong> {selectedReservation.numberOfTickets}枚</p>
+                <ModalText>以下の予約を変更しますか？</ModalText>
+                <ModalText><ModalTextBold>映画:</ModalTextBold> {selectedReservation.movieTitle}</ModalText>
+                <ModalText><ModalTextBold>日時:</ModalTextBold> {formatDate(selectedReservation.date)} {selectedReservation.showtime}</ModalText>
+                <ModalText><ModalTextBold>枚数:</ModalTextBold> {selectedReservation.numberOfTickets}枚</ModalText>
                 <ModalButtons>
                   <Button 
                     className="secondary"

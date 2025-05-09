@@ -156,22 +156,114 @@ const MovieInfo = styled.div`
 const ShowtimeList = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-medium);
-  margin-top: var(--spacing-medium);
+  gap: 15px;
+  justify-content: center;
+  margin-top: 15px;
+`;
+
+const DisabledShowtimeButton = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: ${props => 
+    props.status === "上映中" ? "rgba(139, 0, 0, 0.3)" : 
+    props.status === "終了" ? "rgba(50, 50, 50, 0.6)" : 
+    props.status === "受付終了" ? "rgba(184, 134, 11, 0.3)" : "rgba(50, 50, 50, 0.6)"
+  };
+  border: 2px solid ${props => 
+    props.status === "上映中" ? "#8B0000" : 
+    props.status === "終了" ? "#555555" : 
+    props.status === "受付終了" ? "#B8860B" : "#555555"
+  };
+  border-radius: var(--border-radius);
+  color: ${props => 
+    props.status === "上映中" ? "#FFD700" : 
+    "#CCCCCC"
+  };
+  font-weight: bold;
+  text-align: center;
+  min-width: 100px;
+  cursor: not-allowed;
+  position: relative;
+  overflow: hidden;
+  height: 80px;
+  margin: 5px;
+  
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${props => 
+      props.status === "終了" ? 
+      `repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.1) 5px,
+        rgba(0, 0, 0, 0.2) 5px,
+        rgba(0, 0, 0, 0.2) 10px
+      )` : 'none'
+    };
+    z-index: 1;
+  }
+`;
+
+const TimeDisplay = styled.div`
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 2;
+  text-shadow: ${props => 
+    props.status === "上映中" ? "0 0 8px rgba(255, 215, 0, 0.5)" : 
+    "none"
+  };
+`;
+
+const StatusLabel = styled.div`
+  font-size: 16px;
+  color: ${props => 
+    props.status === "上映中" ? "#FFD700" : 
+    props.status === "終了" ? "#CCCCCC" : 
+    props.status === "受付終了" ? "#FFA500" : 
+    "#CCCCCC"
+  };
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background-color: ${props => 
+    props.status === "上映中" ? "rgba(139, 0, 0, 0.5)" : 
+    props.status === "終了" ? "rgba(0, 0, 0, 0.5)" : 
+    props.status === "受付終了" ? "rgba(184, 134, 11, 0.5)" : 
+    "rgba(0, 0, 0, 0.5)"
+  };
 `;
 
 const ShowtimeButton = styled(Link)`
-  display: inline-block;
-  padding: var(--spacing-medium);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 12px;
   background-color: rgba(0, 0, 0, 0.6);
-  border: 1px solid #FFD700;
+  border: 2px solid #FFD700;
   border-radius: var(--border-radius);
   text-decoration: none;
   color: #FFD700;
   font-weight: bold;
   text-align: center;
   min-width: 100px;
+  height: 80px;
   transition: all 0.3s;
+  margin: 5px;
+  
+  font-size: 22px;
   
   &:hover {
     background-color: #8B0000;
@@ -181,44 +273,43 @@ const ShowtimeButton = styled(Link)`
   }
 `;
 
-const Label = styled.label`
-  display: block;
+const AvailableLabel = styled.div`
+  font-size: 14px;
+  color: #00CC00;
   font-weight: bold;
-  margin-bottom: var(--spacing-small);
-  font-size: var(--font-size-medium);
-  color: #fff;
+  margin-top: 4px;
 `;
 
 // シアターヘッダーのスタイル定義を追加
 const TheaterHeader = styled.h4`
-  margin: 0 0 12px;
-  font-size: 18px; // フォントサイズを大きく
+  margin: 0 0 15px;
+  font-size: 20px;
   font-weight: bold;
-  padding: 8px 12px;
-  background-color: #8B0000; // 濃い赤色（映画館のテーマカラー）
-  color: #FFD700; // 金色のテキスト
-  border-radius: 4px;
+  padding: 10px 15px;
+  background-color: #8B0000;
+  color: #FFD700;
+  border-radius: 8px;
   text-align: center;
-  letter-spacing: 1px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   position: relative;
   
-  // キラキラ効果を追加（オプション）
   &:before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.7), transparent);
   }
 `;
 
 // シアターコンテナーのスタイルを改善
 const TheaterContainer = styled.div`
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   min-width: 150px;
+  width: 100%;
 `;
 
 // 日付を生成する関数（今日から1週間分）
@@ -248,6 +339,14 @@ const formatDateForFirestore = (date) => {
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
+
+const Label = styled.label`
+  display: block;
+  font-weight: bold;
+  margin-bottom: var(--spacing-small);
+  font-size: var(--font-size-medium);
+  color: #fff;
+`;
 
 function SchedulePage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -373,6 +472,37 @@ function SchedulePage() {
     }
   };
 
+  // 上映状態を判定する関数を改善（SchedulePageコンポーネント内に配置）
+  const getShowtimeStatus = (showtimeStr, durationMinutes) => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const selectedDay = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+    
+    // 選択された日付が今日より前の場合
+    if (selectedDay < today) {
+      return "終了"; // 過去の日付はすべて「上映終了」
+    }
+    
+    // 上映開始時間をDate型に変換
+    const [hours, minutes] = showtimeStr.split(':').map(Number);
+    const showtimeDate = new Date(selectedDay);
+    showtimeDate.setHours(hours, minutes, 0);
+    
+    // 上映終了時間を計算（上映時間分を加算）
+    const endTime = new Date(showtimeDate.getTime() + durationMinutes * 60000);
+    
+    // 現在時刻との比較
+    if (now < showtimeDate) {
+      // 上映開始15分前までは予約可能
+      const cutoffTime = new Date(showtimeDate.getTime() - 15 * 60000);
+      return now < cutoffTime ? "予約可能" : "受付終了";
+    } else if (now >= showtimeDate && now < endTime) {
+      return "上映中"; // 上映開始後、終了前
+    } else {
+      return "終了"; // 上映終了後
+    }
+  };
+
   return (
     <PageContainer>
       <ContentWrapper>
@@ -386,7 +516,7 @@ function SchedulePage() {
         <div>
           <Label>日付を選択してください: <HelpTip title="日付の選択方法">
             <p>上映日を選択するには、表示されている日付ボタンをクリックしてください。</p>
-            <p>選択された日付は青色で表示されます。</p>
+            <p>選択された日付は赤色で表示されます。</p>
           </HelpTip></Label>
           <DateSelector>
             {dates.map((date, index) => (
@@ -503,15 +633,26 @@ function SchedulePage() {
                             }}>
                               {theaterGroups[theater]
                                 .sort((a, b) => a.time.localeCompare(b.time))
-                                .map((showtime, index) => (
-                                  <ShowtimeButton 
-                                    key={index} 
-                                    to={`/reservation/${movie.id}/${showtime.id}`}
-                                    style={{ margin: '0' }}
-                                  >
-                                    {showtime.time}
-                                  </ShowtimeButton>
-                                ))
+                                .map((showtime, index) => {
+                                  // 上映時間の状態を取得
+                                  const status = getShowtimeStatus(showtime.time, movie.duration);
+                                  const isAvailable = status === "予約可能";
+                                  
+                                  return isAvailable ? (
+                                    <ShowtimeButton 
+                                      key={index} 
+                                      to={`/reservation/${movie.id}/${showtime.id}`}
+                                    >
+                                      {showtime.time}
+                                      <AvailableLabel>予約可能</AvailableLabel>
+                                    </ShowtimeButton>
+                                  ) : (
+                                    <DisabledShowtimeButton key={index} status={status}>
+                                      <TimeDisplay status={status}>{showtime.time}</TimeDisplay>
+                                      <StatusLabel status={status}>{status}</StatusLabel>
+                                    </DisabledShowtimeButton>
+                                  );
+                                })
                               }
                             </ShowtimeList>
                           </TheaterContainer>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button";
@@ -55,32 +55,95 @@ const FAQContainer = styled.div`
   margin: 0 auto;
 `;
 
-const CategoryTabs = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: var(--spacing-small);
-  margin-bottom: var(--spacing-large);
-  border-bottom: 1px solid #eee;
-  padding-bottom: var(--spacing-medium);
-  flex-wrap: nowrap;
+const CategoryTabsContainer = styled.div`
+  width: 100%;
   overflow-x: auto;
+  margin-bottom: var(--spacing-large);
+  -webkit-overflow-scrolling: touch;
+  
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: #cc0000;
+    border-radius: 4px;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 30px;
+    background: linear-gradient(to right, transparent, rgba(0,0,0,0.3));
+    pointer-events: none;
+    opacity: 0.7;
+    display: ${props => props.showShadow ? 'block' : 'none'};
+  }
+`;
+
+const CategoryTabs = styled.div`
+  display: inline-flex;
+  min-width: 100%;
+  gap: 10px;
   padding: 10px 0;
+  white-space: nowrap;
 `;
 
 const CategoryTab = styled.button`
-  padding: var(--spacing-medium);
+  padding: 10px 20px;
   background-color: ${props => props.active ? '#cc0000' : '#ffffff'};
   color: ${props => props.active ? '#ffffff' : '#cc0000'};
   border: 2px solid #cc0000;
   border-radius: var(--border-radius);
   cursor: pointer;
-  font-size: var(--font-size-medium);
+  font-size: inherit;
   font-weight: bold;
-  white-space: nowrap;
   flex-shrink: 0;
+  white-space: nowrap;
   
   &:hover {
     background-color: ${props => props.active ? '#aa0000' : '#ffeeee'};
+  }
+`;
+
+const ScrollButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  
+  &.left {
+    left: 5px;
+  }
+  
+  &.right {
+    right: 5px;
+  }
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -297,7 +360,7 @@ const faqData = [
         question: "操作方法がわかりません。助けてもらえますか？",
         answer: (
           <>
-            <p>各ページの上部にある「？」アイコンをクリックすると、そのページの操作方法が表示されます。</p>
+            <p>各ページの下部にある「？」アイコンをクリックすると、そのページの操作方法が表示されます。</p>
             <p>また、映画館のスタッフにお電話いただければ、予約のサポートを受けることができます。</p>
           </>
         )
@@ -341,6 +404,8 @@ function FAQPage() {
   const [activeCategory, setActiveCategory] = useState("予約方法");
   const [openQuestions, setOpenQuestions] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
+  const tabsRef = useRef(null);
+  const [showShadow, setShowShadow] = useState(false);
   
   // カテゴリを切り替える
   const handleCategoryChange = (category) => {
@@ -408,6 +473,35 @@ function FAQPage() {
   
   const faqItems = getFAQItems();
   
+  // スクロール検出のための関数
+  const handleScroll = () => {
+    if (tabsRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = tabsRef.current;
+      // スクロールが可能な状態なら影を表示
+      setShowShadow(scrollWidth > clientWidth);
+    }
+  };
+  
+  // コンポーネントマウント時とリサイズ時にスクロール状態をチェック
+  useEffect(() => {
+    handleScroll();
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
+  
+  // タブを左右にスクロールする関数
+  const scrollTabs = (direction) => {
+    if (tabsRef.current) {
+      const scrollAmount = 200; // スクロール量
+      tabsRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+  
   return (
     <PageContainer>
       <ContentWrapper>
@@ -433,17 +527,28 @@ function FAQPage() {
               aria-label="質問を検索"
             />
             
-            <CategoryTabs>
-              {faqData.map((category, index) => (
-                <CategoryTab 
-                  key={index}
-                  active={activeCategory === category.category}
-                  onClick={() => handleCategoryChange(category.category)}
-                >
-                  {category.category}
-                </CategoryTab>
-              ))}
-            </CategoryTabs>
+            <div style={{ position: 'relative' }}>
+              <CategoryTabsContainer ref={tabsRef} showShadow={showShadow} onScroll={handleScroll}>
+                <CategoryTabs>
+                  {faqData.map((category, index) => (
+                    <CategoryTab 
+                      key={index}
+                      active={activeCategory === category.category}
+                      onClick={() => handleCategoryChange(category.category)}
+                    >
+                      {category.category}
+                    </CategoryTab>
+                  ))}
+                </CategoryTabs>
+              </CategoryTabsContainer>
+              
+              <ScrollButton className="left" onClick={() => scrollTabs('left')}>
+                {'<'}
+              </ScrollButton>
+              <ScrollButton className="right" onClick={() => scrollTabs('right')}>
+                {'>'}
+              </ScrollButton>
+            </div>
             
             {faqItems.length > 0 ? (
               faqItems.map((item, index) => {

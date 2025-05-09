@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
 const HelpContainer = styled.div`
@@ -30,7 +30,7 @@ const HelpIcon = styled.button`
 
 const HelpContent = styled.div`
   position: absolute;
-  z-index: 100;
+  z-index: 9999;
   width: 300px;
   background-color: white;
   border: 2px solid var(--primary-color);
@@ -40,34 +40,32 @@ const HelpContent = styled.div`
   font-size: var(--font-size-small);
   color: #333333;
   top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: var(--spacing-small);
+  transform: translateY(10px);
+  right: 0;
+  left: auto;
   
   @media (max-width: 768px) {
-    width: 250px;
-    left: auto;
-    right: 0;
-    transform: none;
+    width: 280px;
+    right: -20px;
+  }
+  
+  @media (min-width: 768px) {
+    &.flip-left {
+      right: auto;
+      left: 0;
+    }
   }
   
   &:before {
     content: '';
     position: absolute;
     top: -8px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 12px;
     width: 0;
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-bottom: 8px solid var(--primary-color);
-    
-    @media (max-width: 768px) {
-      left: auto;
-      right: 8px;
-      transform: none;
-    }
   }
 `;
 
@@ -109,8 +107,17 @@ const HelpText = styled.div`
 
 const HelpTip = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [shouldFlip, setShouldFlip] = useState(false);
+  const helpContentRef = useRef(null);
   
-  // クリック以外の方法でもヘルプを開けるようにする（アクセシビリティ対応）
+  useEffect(() => {
+    if (isOpen && helpContentRef.current) {
+      const rect = helpContentRef.current.getBoundingClientRect();
+      const isOffScreen = rect.right > window.innerWidth;
+      setShouldFlip(isOffScreen);
+    }
+  }, [isOpen]);
+  
   const toggleHelp = () => {
     setIsOpen(!isOpen);
   };
@@ -130,7 +137,10 @@ const HelpTip = ({ title, children }) => {
       </HelpIcon>
       
       {isOpen && (
-        <HelpContent>
+        <HelpContent 
+          ref={helpContentRef}
+          className={shouldFlip ? "flip-left" : ""}
+        >
           <CloseButton onClick={closeHelp} aria-label="閉じる">×</CloseButton>
           <HelpTitle>{title}</HelpTitle>
           <HelpText>{children}</HelpText>
