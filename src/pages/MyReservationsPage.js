@@ -7,14 +7,41 @@ import { collection, query, where, getDocs, doc, getDoc, updateDoc, deleteDoc } 
 import PageHelp, { HelpSectionBlock } from "../components/PageHelp";
 import HelpTip from "../components/HelpTip";
 import { useAuth } from "../contexts/AuthContext";
+import { 
+  CinemaPageContainer, 
+  CinemaContentContainer, 
+  CinemaTitle,
+  CinemaButton
+} from "../styles/CinemaTheme";
 
-const PageContainer = styled.div`
-  padding: var(--spacing-large) 0;
+const PageContainer = styled(CinemaPageContainer)``;
+
+const ContentWrapper = styled(CinemaContentContainer)`
+  text-align: left;
 `;
 
-const PageTitle = styled.h1`
+const BackButton = styled(CinemaButton)`
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 2px dashed #FFD700;
+  margin-bottom: var(--spacing-large);
+  
+  &:hover {
+    background-color: #8B0000;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  }
+`;
+
+const PageTitle = styled(CinemaTitle)`
+  margin-bottom: 30px;
   text-align: center;
-  margin-bottom: var(--spacing-xlarge);
+  width: 100%;
+  color: #FFD700;
+  
+  &:before, &:after {
+    content: none;
+  }
 `;
 
 const SearchForm = styled.form`
@@ -265,6 +292,53 @@ const ModalTextWarning = styled.p`
   margin-top: 15px;
   font-weight: bold;
 `;
+
+// コンポーネントの上部に新しいスタイルオブジェクトを追加
+const darkThemeStyles = {
+  searchForm: {
+    backgroundColor: '#222222',
+    color: '#f0f0f0',
+    border: '1px solid rgba(255, 215, 0, 0.3)'
+  },
+  instructionTitle: {
+    color: '#FFD700'
+  },
+  instructionText: {
+    color: '#f0f0f0',
+    backgroundColor: '#333333',
+    borderLeft: '4px solid #FFD700'
+  },
+  inputLabel: {
+    color: '#f0f0f0'
+  },
+  input: {
+    backgroundColor: '#333333',
+    color: '#f0f0f0',
+    border: '2px solid #444'
+  },
+  reservationCard: {
+    backgroundColor: '#222222',
+    color: '#f0f0f0',
+    border: '1px solid rgba(255, 215, 0, 0.3)'
+  },
+  movieTitle: {
+    color: '#FFD700'
+  },
+  reservationDetails: {
+    backgroundColor: '#333333',
+    border: '1px solid rgba(255, 215, 0, 0.2)'
+  },
+  detailRow: {
+    borderBottom: '1px dashed #444'
+  },
+  detailLabel: {
+    color: '#FFD700',
+    backgroundColor: '#383838'
+  },
+  detailValue: {
+    color: '#f0f0f0'
+  }
+};
 
 function MyReservationsPage() {
   const navigate = useNavigate();
@@ -523,218 +597,221 @@ function MyReservationsPage() {
 
   return (
     <PageContainer>
-      <Link to="/">
-        <Button className="secondary" style={{ marginBottom: 'var(--spacing-large)' }}>
-          ← トップページに戻る
-        </Button>
-      </Link>
-      
-      <PageTitle>予約履歴・管理</PageTitle>
-      
-      <SearchForm onSubmit={handleSearch}>
-        <InstructionTitle>予約情報を検索</InstructionTitle>
-        <InstructionText>
-          予約時に入力したお名前、または電話番号で予約を検索できます。
-          どちらか一方の入力でも検索可能です。
-        </InstructionText>
+      <ContentWrapper>
+        <Link to="/">
+          <BackButton>← トップページに戻る</BackButton>
+        </Link>
         
-        <FormGroup>
-          <InputLabel htmlFor="name">
-            お名前:
-            <HelpTip title="お名前の入力">
-              <p>予約時に入力したお名前を入力してください。</p>
-              <p>お名前か電話番号、どちらか一方だけでも検索できます。</p>
-            </HelpTip>
-          </InputLabel>
-          <Input 
-            type="text"
-            id="name"
-            name="name"
-            value={searchParams.name}
-            onChange={handleChange}
-            placeholder="例: 山田 太郎"
-          />
-        </FormGroup>
+        <PageTitle>予約履歴・管理</PageTitle>
         
-        <FormGroup>
-          <InputLabel htmlFor="phone">
-            電話番号:
-            <HelpTip title="電話番号の入力">
-              <p>予約時に入力した電話番号を入力してください。</p>
-              <p>ハイフン（-）ありでもなしでも検索できます。</p>
-            </HelpTip>
-          </InputLabel>
-          <Input 
-            type="tel"
-            id="phone"
-            name="phone"
-            value={searchParams.phone}
-            onChange={handleChange}
-            placeholder="例: 090-1234-5678"
-          />
-        </FormGroup>
+        <SearchForm style={darkThemeStyles.searchForm} onSubmit={handleSearch}>
+          <InstructionTitle style={darkThemeStyles.instructionTitle}>予約情報を検索</InstructionTitle>
+          
+          <InstructionText style={darkThemeStyles.instructionText}>
+            予約時に入力したお名前、または電話番号で予約を検索できます。 どちらか一方の入力でも検索可能です。
+          </InstructionText>
+          
+          <FormGroup>
+            <InputLabel style={darkThemeStyles.inputLabel} htmlFor="name">
+              お名前:
+              <HelpTip title="お名前の入力">
+                <p>予約時に入力したお名前を入力してください。</p>
+                <p>お名前か電話番号、どちらか一方だけでも検索できます。</p>
+              </HelpTip>
+            </InputLabel>
+            <Input 
+              style={darkThemeStyles.input}
+              type="text"
+              id="name"
+              name="name"
+              value={searchParams.name}
+              onChange={handleChange}
+              placeholder="例: 山田 太郎"
+            />
+          </FormGroup>
+          
+          <FormGroup>
+            <InputLabel style={darkThemeStyles.inputLabel} htmlFor="phone">
+              電話番号:
+              <HelpTip title="電話番号の入力">
+                <p>予約時に入力した電話番号を入力してください。</p>
+                <p>ハイフン（-）ありでもなしでも検索できます。</p>
+              </HelpTip>
+            </InputLabel>
+            <Input 
+              style={darkThemeStyles.input}
+              type="tel"
+              id="phone"
+              name="phone"
+              value={searchParams.phone}
+              onChange={handleChange}
+              placeholder="例: 090-1234-5678"
+            />
+          </FormGroup>
+          
+          <SearchButton type="submit" disabled={loading}>
+            {loading ? "検索中..." : "予約を検索"}
+          </SearchButton>
+        </SearchForm>
         
-        <SearchButton type="submit" disabled={loading}>
-          {loading ? "検索中..." : "予約を検索"}
-        </SearchButton>
-      </SearchForm>
-      
-      {searched && (
-        <ReservationsList>
-          {reservations.length > 0 ? (
-            reservations.map(reservation => (
-              <ReservationCard 
-                key={reservation.id}
-                status={reservation.status}
-                date={reservation.date}
-              >
-                <ReservationHeader>
-                  <MovieTitle>{reservation.movieTitle}</MovieTitle>
-                  <StatusBadge status={reservation.status}>
-                    {reservation.statusDisplay}
-                    <HelpTip title="予約の状態">
-                      <p><strong>予約済</strong>: 有効な予約です。映画館で上映されるのをお待ちください。</p>
-                      <p><strong>上映終了</strong>: すでに上映が終了した予約です。</p>
-                      <p><strong>キャンセル済</strong>: キャンセルされた予約です。</p>
-                    </HelpTip>
-                  </StatusBadge>
-                </ReservationHeader>
-                
-                <ReservationDetails>
-                  <DetailRow>
-                    <DetailLabel>予約番号:</DetailLabel>
-                    <DetailValue>{reservation.id}</DetailValue>
-                  </DetailRow>
-                  <DetailRow>
-                    <DetailLabel>上映日:</DetailLabel>
-                    <DetailValue>{formatDate(reservation.date)}</DetailValue>
-                  </DetailRow>
-                  <DetailRow>
-                    <DetailLabel>上映時間:</DetailLabel>
-                    <DetailValue>{reservation.showtime}</DetailValue>
-                  </DetailRow>
-                  <DetailRow>
-                    <DetailLabel>チケット:</DetailLabel>
-                    <DetailValue>
-                      {getTicketTypeDisplay(reservation.ticketType)} × {reservation.numberOfTickets}枚
-                    </DetailValue>
-                  </DetailRow>
-                  {reservation.selectedSeats && (
-                    <DetailRow>
-                      <DetailLabel>座席:</DetailLabel>
-                      <DetailValue>
-                        {reservation.selectedSeats.join(', ')}
+        {searched && (
+          <ReservationsList>
+            {reservations.length > 0 ? (
+              reservations.map(reservation => (
+                <ReservationCard 
+                  key={reservation.id}
+                  status={reservation.status}
+                  date={reservation.date}
+                  style={darkThemeStyles.reservationCard}
+                >
+                  <ReservationHeader>
+                    <MovieTitle style={darkThemeStyles.movieTitle}>{reservation.movieTitle}</MovieTitle>
+                    <StatusBadge status={reservation.status} style={darkThemeStyles.statusBadge}>
+                      {reservation.statusDisplay}
+                      <HelpTip title="予約の状態">
+                        <p><strong>予約済</strong>: 有効な予約です。映画館で上映されるのをお待ちください。</p>
+                        <p><strong>上映終了</strong>: すでに上映が終了した予約です。</p>
+                        <p><strong>キャンセル済</strong>: キャンセルされた予約です。</p>
+                      </HelpTip>
+                    </StatusBadge>
+                  </ReservationHeader>
+                  
+                  <ReservationDetails style={darkThemeStyles.reservationDetails}>
+                    <DetailRow style={darkThemeStyles.detailRow}>
+                      <DetailLabel style={darkThemeStyles.detailLabel}>予約番号:</DetailLabel>
+                      <DetailValue style={darkThemeStyles.detailValue}>{reservation.id}</DetailValue>
+                    </DetailRow>
+                    <DetailRow style={darkThemeStyles.detailRow}>
+                      <DetailLabel style={darkThemeStyles.detailLabel}>上映日:</DetailLabel>
+                      <DetailValue style={darkThemeStyles.detailValue}>{formatDate(reservation.date)}</DetailValue>
+                    </DetailRow>
+                    <DetailRow style={darkThemeStyles.detailRow}>
+                      <DetailLabel style={darkThemeStyles.detailLabel}>上映時間:</DetailLabel>
+                      <DetailValue style={darkThemeStyles.detailValue}>{reservation.showtime}</DetailValue>
+                    </DetailRow>
+                    <DetailRow style={darkThemeStyles.detailRow}>
+                      <DetailLabel style={darkThemeStyles.detailLabel}>チケット:</DetailLabel>
+                      <DetailValue style={darkThemeStyles.detailValue}>
+                        {getTicketTypeDisplay(reservation.ticketType)} × {reservation.numberOfTickets}枚
                       </DetailValue>
                     </DetailRow>
-                  )}
-                  <DetailRow>
-                    <DetailLabel>合計金額:</DetailLabel>
-                    <DetailValue>
-                      {reservation.totalPrice?.toLocaleString() || '---'}円
-                    </DetailValue>
-                  </DetailRow>
-                </ReservationDetails>
-                
-                <ActionButtons>
-                  <ActionButton 
-                    onClick={() => viewReservationDetails(reservation.id)}
-                  >
-                    詳細を見る
-                  </ActionButton>
+                    {reservation.selectedSeats && (
+                      <DetailRow style={darkThemeStyles.detailRow}>
+                        <DetailLabel style={darkThemeStyles.detailLabel}>座席:</DetailLabel>
+                        <DetailValue style={darkThemeStyles.detailValue}>
+                          {reservation.selectedSeats.join(', ')}
+                        </DetailValue>
+                      </DetailRow>
+                    )}
+                    <DetailRow style={darkThemeStyles.detailRow}>
+                      <DetailLabel style={darkThemeStyles.detailLabel}>合計金額:</DetailLabel>
+                      <DetailValue style={darkThemeStyles.detailValue}>
+                        {reservation.totalPrice?.toLocaleString() || '---'}円
+                      </DetailValue>
+                    </DetailRow>
+                  </ReservationDetails>
                   
-                  {reservation.status === "active" && (
-                    <>
-                      <ActionButton 
-                        onClick={() => showModifyModal(reservation)}
-                      >
-                        予約を変更
-                      </ActionButton>
-                      <CancelButton 
-                        onClick={() => showCancelModal(reservation)}
-                      >
-                        予約をキャンセル
-                      </CancelButton>
-                    </>
-                  )}
-                </ActionButtons>
-              </ReservationCard>
-            ))
-          ) : (
-            <NoReservations>
-              <h3>予約が見つかりませんでした</h3>
-              <p>入力情報をご確認の上、もう一度検索してください。</p>
-            </NoReservations>
-          )}
-        </ReservationsList>
-      )}
-      
-      {modalOpen && selectedReservation && (
-        <Modal>
-          <ModalContent>
-            {modalAction === "cancel" ? (
-              <>
-                <ModalTitle>予約キャンセルの確認</ModalTitle>
-                <ModalText>以下の予約をキャンセルしますか？</ModalText>
-                <ModalText><ModalTextBold>映画:</ModalTextBold> {selectedReservation.movieTitle}</ModalText>
-                <ModalText><ModalTextBold>日時:</ModalTextBold> {formatDate(selectedReservation.date)} {selectedReservation.showtime}</ModalText>
-                <ModalText><ModalTextBold>枚数:</ModalTextBold> {selectedReservation.numberOfTickets}枚</ModalText>
-                <ModalTextWarning>※キャンセル後の復元はできません。</ModalTextWarning>
-                <ModalButtons>
-                  <Button 
-                    className="secondary"
-                    onClick={closeModal}
-                  >
-                    戻る
-                  </Button>
-                  <CancelButton onClick={cancelReservation}>
-                    キャンセルする
-                  </CancelButton>
-                </ModalButtons>
-              </>
+                  <ActionButtons>
+                    <ActionButton 
+                      onClick={() => viewReservationDetails(reservation.id)}
+                    >
+                      詳細を見る
+                    </ActionButton>
+                    
+                    {reservation.status === "active" && (
+                      <>
+                        <ActionButton 
+                          onClick={() => showModifyModal(reservation)}
+                        >
+                          予約を変更
+                        </ActionButton>
+                        <CancelButton 
+                          onClick={() => showCancelModal(reservation)}
+                        >
+                          予約をキャンセル
+                        </CancelButton>
+                      </>
+                    )}
+                  </ActionButtons>
+                </ReservationCard>
+              ))
             ) : (
-              <>
-                <ModalTitle>予約変更の確認</ModalTitle>
-                <ModalText>以下の予約を変更しますか？</ModalText>
-                <ModalText><ModalTextBold>映画:</ModalTextBold> {selectedReservation.movieTitle}</ModalText>
-                <ModalText><ModalTextBold>日時:</ModalTextBold> {formatDate(selectedReservation.date)} {selectedReservation.showtime}</ModalText>
-                <ModalText><ModalTextBold>枚数:</ModalTextBold> {selectedReservation.numberOfTickets}枚</ModalText>
-                <ModalButtons>
-                  <Button 
-                    className="secondary"
-                    onClick={closeModal}
-                  >
-                    戻る
-                  </Button>
-                  <ActionButton onClick={goToModifyReservation}>
-                    変更する
-                  </ActionButton>
-                </ModalButtons>
-              </>
+              <NoReservations>
+                <h3>予約が見つかりませんでした</h3>
+                <p>入力情報をご確認の上、もう一度検索してください。</p>
+              </NoReservations>
             )}
-          </ModalContent>
-        </Modal>
-      )}
-      
-      <PageHelp title="予約の確認と管理方法">
-        <HelpSectionBlock title="予約の検索方法">
-          <p>予約を検索するには、予約時に入力した<strong>お名前</strong>または<strong>電話番号</strong>を入力してください。</p>
-          <p>両方入力すると、より正確に検索できます。</p>
-        </HelpSectionBlock>
+          </ReservationsList>
+        )}
         
-        <HelpSectionBlock title="予約状態について">
-          <ul>
-            <li><strong>予約済</strong> - 有効な予約です。変更やキャンセルが可能です。</li>
-            <li><strong>上映終了</strong> - すでに上映時間が過ぎた予約です。変更やキャンセルはできません。</li>
-            <li><strong>キャンセル済</strong> - キャンセルされた予約です。復元はできません。</li>
-          </ul>
-        </HelpSectionBlock>
+        {modalOpen && selectedReservation && (
+          <Modal>
+            <ModalContent>
+              {modalAction === "cancel" ? (
+                <>
+                  <ModalTitle>予約キャンセルの確認</ModalTitle>
+                  <ModalText>以下の予約をキャンセルしますか？</ModalText>
+                  <ModalText><ModalTextBold>映画:</ModalTextBold> {selectedReservation.movieTitle}</ModalText>
+                  <ModalText><ModalTextBold>日時:</ModalTextBold> {formatDate(selectedReservation.date)} {selectedReservation.showtime}</ModalText>
+                  <ModalText><ModalTextBold>枚数:</ModalTextBold> {selectedReservation.numberOfTickets}枚</ModalText>
+                  <ModalTextWarning>※キャンセル後の復元はできません。</ModalTextWarning>
+                  <ModalButtons>
+                    <Button 
+                      className="secondary"
+                      onClick={closeModal}
+                    >
+                      戻る
+                    </Button>
+                    <CancelButton onClick={cancelReservation}>
+                      キャンセルする
+                    </CancelButton>
+                  </ModalButtons>
+                </>
+              ) : (
+                <>
+                  <ModalTitle>予約変更の確認</ModalTitle>
+                  <ModalText>以下の予約を変更しますか？</ModalText>
+                  <ModalText><ModalTextBold>映画:</ModalTextBold> {selectedReservation.movieTitle}</ModalText>
+                  <ModalText><ModalTextBold>日時:</ModalTextBold> {formatDate(selectedReservation.date)} {selectedReservation.showtime}</ModalText>
+                  <ModalText><ModalTextBold>枚数:</ModalTextBold> {selectedReservation.numberOfTickets}枚</ModalText>
+                  <ModalButtons>
+                    <Button 
+                      className="secondary"
+                      onClick={closeModal}
+                    >
+                      戻る
+                    </Button>
+                    <ActionButton onClick={goToModifyReservation}>
+                      変更する
+                    </ActionButton>
+                  </ModalButtons>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
+        )}
         
-        <HelpSectionBlock title="予約の変更・キャンセル">
-          <p><strong>予約変更</strong>: 「予約を変更」ボタンをクリックすると、チケットの種類や座席などを変更できます。</p>
-          <p><strong>予約キャンセル</strong>: 「予約をキャンセル」ボタンをクリックすると、予約をキャンセルできます。</p>
-          <p>※上映時間を過ぎた予約は変更・キャンセルできません。</p>
-        </HelpSectionBlock>
-      </PageHelp>
+        <PageHelp title="予約の確認と管理方法">
+          <HelpSectionBlock title="予約の検索方法">
+            <p>予約を検索するには、予約時に入力した<strong>お名前</strong>または<strong>電話番号</strong>を入力してください。</p>
+            <p>両方入力すると、より正確に検索できます。</p>
+          </HelpSectionBlock>
+          
+          <HelpSectionBlock title="予約状態について">
+            <ul>
+              <li><strong>予約済</strong> - 有効な予約です。変更やキャンセルが可能です。</li>
+              <li><strong>上映終了</strong> - すでに上映時間が過ぎた予約です。変更やキャンセルはできません。</li>
+              <li><strong>キャンセル済</strong> - キャンセルされた予約です。復元はできません。</li>
+            </ul>
+          </HelpSectionBlock>
+          
+          <HelpSectionBlock title="予約の変更・キャンセル">
+            <p><strong>予約変更</strong>: 「予約を変更」ボタンをクリックすると、チケットの種類や座席などを変更できます。</p>
+            <p><strong>予約キャンセル</strong>: 「予約をキャンセル」ボタンをクリックすると、予約をキャンセルできます。</p>
+            <p>※上映時間を過ぎた予約は変更・キャンセルできません。</p>
+          </HelpSectionBlock>
+        </PageHelp>
+      </ContentWrapper>
     </PageContainer>
   );
 }

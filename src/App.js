@@ -131,6 +131,19 @@ const HighContrastStyles = createGlobalStyle`
     border: 3px solid #ffff00 !important;
   }
   
+  /* 閉じるボタンのハイコントラスト調整 */
+  button[aria-label="閉じる"] {
+    background-color: #ff0000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+    z-index: 10000 !important;
+  }
+  
+  /* モーダルコンテンツの余白調整 */
+  .help-content {
+    padding-top: 30px !important;
+  }
+  
   /* 映画ポスターの枠を追加 */
   img, .movie-poster {
     border: 2px solid #ffff00 !important;
@@ -263,7 +276,7 @@ function AppContent() {
         </Routes>
         <Footer />
         <VoiceGuide location={routerLocation} />
-      </div>
+    </div>
     </ThemeProvider>
   );
 }

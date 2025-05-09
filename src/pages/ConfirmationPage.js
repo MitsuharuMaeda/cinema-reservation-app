@@ -20,6 +20,8 @@ const PageContainer = styled(CinemaPageContainer)``;
 
 const ContentWrapper = styled(CinemaContentContainer)`
   text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
 `;
 
 const PageTitle = styled(CinemaTitle)`
@@ -27,11 +29,11 @@ const PageTitle = styled(CinemaTitle)`
 `;
 
 const ConfirmationCard = styled(CinemaCard)`
-  background-color: rgba(20, 20, 20, 0.8);
-  border: 2px dashed #FFD700;
+  background-color: rgba(20, 20, 20, 0.9);
+  border: 2px solid #FFD700;
   position: relative;
   overflow: hidden;
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
   
   &:before {
@@ -61,7 +63,13 @@ const ReservationDetails = styled.div`
 
 const DetailRow = styled.div`
   display: flex;
-  margin-bottom: var(--spacing-medium);
+  margin-bottom: 15px;
+  border-bottom: 1px dotted rgba(255, 215, 0, 0.3);
+  padding-bottom: 10px;
+  
+  &:last-child {
+    border-bottom: none;
+  }
   
   @media (max-width: 768px) {
     flex-direction: column;
@@ -79,21 +87,8 @@ const DetailValue = styled.span`
   color: #FFFFFF;
 `;
 
-const QRCodeContainer = styled.div`
-  margin: var(--spacing-large) 0;
-  
-  img {
-    max-width: 200px;
-    height: auto;
-  }
-`;
-
-const HomeButton = styled(Button)`
-  margin-top: var(--spacing-large);
-`;
-
 const QRSection = styled.div`
-  background-color: rgba(20, 20, 20, 0.8);
+  background-color: rgba(20, 20, 20, 0.9);
   padding: 20px;
   border-radius: 10px;
   display: inline-block;
@@ -108,15 +103,31 @@ const QRSection = styled.div`
   }
 `;
 
-const ReservationDetail = styled.div`
-  margin: 15px 0;
+const ActionButtons = styled.div`
   display: flex;
-  border-bottom: 1px dotted rgba(255, 215, 0, 0.3);
-  padding-bottom: 10px;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+  flex-direction: row;
   
-  &:last-child {
-    border-bottom: none;
+  @media (max-width: 768px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
   }
+`;
+
+const StyledButton = styled(CinemaButton)`
+  width: 200px;
+  margin: 10px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const HomeButton = styled(StyledButton)`
+  /* ここでは追加のスタイルは必要なし */
 `;
 
 function ConfirmationPage() {
@@ -193,46 +204,42 @@ function ConfirmationPage() {
           <SuccessMessage>ご予約ありがとうございました！</SuccessMessage>
           
           <ReservationDetails>
-            <ReservationDetail>
+            <DetailRow>
               <DetailLabel>予約番号:</DetailLabel>
               <DetailValue>{reservation.id}</DetailValue>
-            </ReservationDetail>
-            <ReservationDetail>
+            </DetailRow>
+            <DetailRow>
               <DetailLabel>映画:</DetailLabel>
               <DetailValue>{reservation.movie}</DetailValue>
-            </ReservationDetail>
-            <ReservationDetail>
-              <DetailLabel>日付:</DetailLabel>
+            </DetailRow>
+            <DetailRow>
+              <DetailLabel>上映日:</DetailLabel>
               <DetailValue>{reservation.date}</DetailValue>
-            </ReservationDetail>
-            <ReservationDetail>
-              <DetailLabel>時間:</DetailLabel>
+            </DetailRow>
+            <DetailRow>
+              <DetailLabel>上映時間:</DetailLabel>
               <DetailValue>{reservation.showtime}</DetailValue>
-            </ReservationDetail>
-            <ReservationDetail>
+            </DetailRow>
+            <DetailRow>
               <DetailLabel>チケット:</DetailLabel>
               <DetailValue>{reservation.ticketType} × {reservation.numberOfTickets}枚</DetailValue>
-            </ReservationDetail>
-            <ReservationDetail>
-              <DetailLabel>合計金額:</DetailLabel>
-              <DetailValue>{reservation.totalPrice}</DetailValue>
-            </ReservationDetail>
-            <ReservationDetail>
+            </DetailRow>
+            <DetailRow>
+              <DetailLabel>座席:</DetailLabel>
+              <DetailValue>{reservation.selectedSeats?.join(', ')}</DetailValue>
+            </DetailRow>
+            <DetailRow>
               <DetailLabel>お名前:</DetailLabel>
               <DetailValue>{reservation.name}</DetailValue>
-            </ReservationDetail>
-            <ReservationDetail>
+            </DetailRow>
+            <DetailRow>
               <DetailLabel>電話番号:</DetailLabel>
               <DetailValue>{reservation.phone}</DetailValue>
-            </ReservationDetail>
-            <ReservationDetail>
-              <DetailLabel>座席:</DetailLabel>
-              <DetailValue>
-                {reservation.selectedSeats && reservation.selectedSeats.length > 0 
-                  ? reservation.selectedSeats.join(', ') 
-                  : '座席情報なし'}
-              </DetailValue>
-            </ReservationDetail>
+            </DetailRow>
+            <DetailRow>
+              <DetailLabel>合計金額:</DetailLabel>
+              <DetailValue>{reservation.totalPrice}</DetailValue>
+            </DetailRow>
           </ReservationDetails>
           
           <div>
@@ -248,18 +255,18 @@ function ConfirmationPage() {
             </QRSection>
           </div>
           
-          <div style={{ marginTop: 'var(--spacing-large)' }}>
+          <ActionButtons>
             <Link to="/">
-              <HomeButton style={{ marginRight: 'var(--spacing-medium)' }}>
+              <StyledButton>
                 トップページに戻る
-              </HomeButton>
+              </StyledButton>
             </Link>
             <Link to="/my-reservations">
-              <Button>
+              <StyledButton>
                 予約履歴を見る
-              </Button>
+              </StyledButton>
             </Link>
-          </div>
+          </ActionButtons>
         </ConfirmationCard>
         
         <PageHelp title="予約確認について">

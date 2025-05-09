@@ -6,7 +6,8 @@ import { OrderedList } from "../components/CustomList";
 import { 
   CinemaPageContainer, 
   CinemaContentContainer, 
-  CinemaTitle
+  CinemaTitle,
+  CinemaButton
 } from "../styles/CinemaTheme";
 
 const PageContainer = styled(CinemaPageContainer)``;
@@ -37,17 +38,16 @@ const PageTitle = styled(CinemaTitle)`
 
 const HeaderArea = styled.div`
   margin-bottom: 20px;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
 `;
 
-const BackButton = styled(Button)`
-  margin: 15px 0;
-  background-color: #666;
-  color: #fff;
-  border-radius: 5px;
-  padding: 10px 15px;
-  &:hover {
-    background-color: #555;
-  }
+const BackButton = styled(CinemaButton)`
+  position: absolute;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
 `;
 
 const FAQContainer = styled.div`
@@ -507,17 +507,14 @@ function FAQPage() {
       <ContentWrapper>
         <HeaderArea>
           <StyledLink to="/">
-            <BackButton className="secondary">
+            <BackButton>
               ← トップページに戻る
             </BackButton>
           </StyledLink>
+          <PageTitle>よくある質問（FAQ）</PageTitle>
         </HeaderArea>
         
         <YellowBorderContainer>
-          <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-            <PageTitle>よくある質問（FAQ）</PageTitle>
-          </div>
-          
           <FAQContainer>
             <SearchInput 
               type="text" 

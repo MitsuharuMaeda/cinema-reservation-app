@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { loginWithEmail, loginWithGoogle } from "../firebase/auth";
-import Button from "../components/Button";
 import { 
   CinemaPageContainer, 
   CinemaContentContainer, 
-  CinemaTitle
+  CinemaTitle,
+  CinemaForm,
+  CinemaFormGroup,
+  CinemaLabel,
+  CinemaInput,
+  CinemaSubmitButton,
+  CinemaLinkText,
+  CinemaErrorMessage
 } from "../styles/CinemaTheme";
+import styled from "styled-components";
 
 const PageContainer = styled(CinemaPageContainer)``;
 
@@ -19,70 +25,12 @@ const PageTitle = styled(CinemaTitle)`
   margin-bottom: 30px;
 `;
 
-const LoginForm = styled.form`
-  background-color: white;
-  padding: var(--spacing-large);
-  border-radius: var(--border-radius);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: #333333; // ダークグレーの文字色に設定
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: var(--spacing-large);
-`;
-
-const Label = styled.label`
-  display: block;
-  font-weight: bold;
-  margin-bottom: var(--spacing-small);
-  color: #333333;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: var(--spacing-medium);
-  border: 2px solid #ccc;
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-medium);
-  
-  &:focus {
-    border-color: var(--primary-color);
-    outline: none;
-  }
-`;
-
-const ErrorMessage = styled.p`
-  color: var(--error-color);
-  margin-top: var(--spacing-small);
-`;
-
-const SubmitButton = styled(Button)`
-  width: 100%;
-  margin-top: var(--spacing-medium);
-`;
-
-const GoogleButton = styled(Button)`
-  width: 100%;
-  margin-top: var(--spacing-small);
+const GoogleButton = styled(CinemaSubmitButton)`
   background-color: #4285F4;
+  margin-top: var(--spacing-medium);
   
   &:hover {
     background-color: #3367D6;
-  }
-`;
-
-const RegisterLink = styled.p`
-  text-align: center;
-  margin-top: var(--spacing-large);
-  color: #333333;
-  
-  a {
-    color: var(--primary-color);
-    text-decoration: underline;
-    
-    &:hover {
-      color: var(--secondary-color);
-    }
   }
 `;
 
@@ -147,12 +95,12 @@ function LoginPage() {
       <ContentWrapper>
         <PageTitle>ログイン</PageTitle>
         
-        <LoginForm onSubmit={handleSubmit}>
-          {error && <ErrorMessage>{error}</ErrorMessage>}
+        <CinemaForm onSubmit={handleSubmit}>
+          {error && <CinemaErrorMessage>{error}</CinemaErrorMessage>}
           
-          <FormGroup>
-            <Label htmlFor="email">メールアドレス:</Label>
-            <Input 
+          <CinemaFormGroup>
+            <CinemaLabel htmlFor="email">メールアドレス:</CinemaLabel>
+            <CinemaInput 
               type="email"
               id="email"
               name="email"
@@ -161,11 +109,11 @@ function LoginPage() {
               required
               placeholder="example@example.com"
             />
-          </FormGroup>
+          </CinemaFormGroup>
           
-          <FormGroup>
-            <Label htmlFor="password">パスワード:</Label>
-            <Input 
+          <CinemaFormGroup>
+            <CinemaLabel htmlFor="password">パスワード:</CinemaLabel>
+            <CinemaInput 
               type="password"
               id="password"
               name="password"
@@ -174,24 +122,24 @@ function LoginPage() {
               required
               placeholder="パスワードを入力"
             />
-          </FormGroup>
+          </CinemaFormGroup>
           
-          <SubmitButton type="submit" disabled={loading}>
+          <CinemaSubmitButton type="submit" disabled={loading}>
             {loading ? "ログイン中..." : "ログイン"}
-          </SubmitButton>
+          </CinemaSubmitButton>
           
           <GoogleButton type="button" onClick={handleGoogleLogin} disabled={loading}>
             Googleでログイン
           </GoogleButton>
           
-          <RegisterLink>
-            アカウントをお持ちでない方は <Link to="/register">新規登録</Link>
-          </RegisterLink>
+          <CinemaLinkText>
+            アカウントをお持ちでない方は <Link to="/register" style={{color: '#ADD8E6', textDecoration: 'underline'}}>新規登録</Link>
+          </CinemaLinkText>
           
-          <RegisterLink>
-            <Link to="/reset-password">パスワードをお忘れですか？</Link>
-          </RegisterLink>
-        </LoginForm>
+          <CinemaLinkText>
+            <Link to="/reset-password" style={{color: '#ADD8E6', textDecoration: 'underline'}}>パスワードをお忘れですか？</Link>
+          </CinemaLinkText>
+        </CinemaForm>
       </ContentWrapper>
     </PageContainer>
   );

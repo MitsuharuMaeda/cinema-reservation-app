@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 // 映画館風のページコンテナ
 export const CinemaPageContainer = styled.div`
@@ -168,7 +169,7 @@ export const CinemaText = styled.p`
 `;
 
 // 映画館風のリンク
-export const CinemaLink = styled.a`
+export const CinemaLink = styled(Link)`
   color: #ADD8E6;
   text-decoration: underline;
   transition: color 0.3s;
@@ -176,4 +177,91 @@ export const CinemaLink = styled.a`
   &:hover {
     color: #FFD700;
   }
+`;
+
+// 映画館風のフォームコンテナ
+export const CinemaForm = styled.form`
+  background-color: #222222;
+  padding: var(--spacing-large);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: 2px solid #FFD700;
+  position: relative;
+  margin: 0 auto;
+  
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+  }
+`;
+
+export const CinemaFormGroup = styled.div`
+  margin-bottom: var(--spacing-large);
+`;
+
+export const CinemaLabel = styled.label`
+  display: block;
+  font-weight: bold;
+  margin-bottom: var(--spacing-small);
+  color: #FFD700;
+  font-size: 18px;
+`;
+
+export const CinemaInput = styled.input`
+  width: 100%;
+  padding: var(--spacing-medium);
+  background-color: #333333;
+  border: 2px solid #FFD700;
+  border-radius: 5px;
+  font-size: var(--font-size-medium);
+  color: #FFFFFF;
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  }
+  
+  &::placeholder {
+    color: #999999;
+  }
+`;
+
+export const CinemaSubmitButton = styled(CinemaButton)`
+  width: 100%;
+  margin-top: var(--spacing-large);
+  background-color: #8B0000;
+  cursor: pointer;
+  
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+`;
+
+export const CinemaLinkText = styled.p`
+  text-align: center;
+  margin-top: var(--spacing-large);
+  color: #FFFFFF;
+`;
+
+export const CinemaErrorMessage = styled.p`
+  color: #FF6B6B;
+  background-color: rgba(255, 0, 0, 0.1);
+  border-left: 3px solid #FF6B6B;
+  padding: 10px;
+  margin-bottom: var(--spacing-medium);
+`;
+
+export const CinemaSuccessMessage = styled.p`
+  color: #6BFF6B;
+  background-color: rgba(0, 255, 0, 0.1);
+  border-left: 3px solid #6BFF6B;
+  padding: 10px;
+  margin-bottom: var(--spacing-medium);
 `;

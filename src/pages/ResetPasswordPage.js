@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import { resetPassword } from "../firebase/auth";
-import Button from "../components/Button";
 import { 
   CinemaPageContainer, 
   CinemaContentContainer, 
-  CinemaTitle
+  CinemaTitle,
+  CinemaForm,
+  CinemaFormGroup,
+  CinemaLabel,
+  CinemaInput,
+  CinemaSubmitButton,
+  CinemaLinkText,
+  CinemaErrorMessage,
+  CinemaSuccessMessage
 } from "../styles/CinemaTheme";
+import styled from "styled-components";
 
 const PageContainer = styled(CinemaPageContainer)``;
 
@@ -17,68 +24,6 @@ const ContentWrapper = styled(CinemaContentContainer)`
 
 const PageTitle = styled(CinemaTitle)`
   margin-bottom: 30px;
-`;
-
-const ResetForm = styled.form`
-  background-color: white;
-  padding: var(--spacing-large);
-  border-radius: var(--border-radius);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: #333333;
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: var(--spacing-large);
-`;
-
-const Label = styled.label`
-  display: block;
-  font-weight: bold;
-  margin-bottom: var(--spacing-small);
-  color: #333333; // ダークグレーに設定
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: var(--spacing-medium);
-  border: 2px solid #ccc;
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-medium);
-  
-  &:focus {
-    border-color: var(--primary-color);
-    outline: none;
-  }
-`;
-
-const ErrorMessage = styled.p`
-  color: var(--error-color);
-  margin-top: var(--spacing-small);
-`;
-
-const SuccessMessage = styled.p`
-  color: var(--success-color);
-  margin-top: var(--spacing-small);
-`;
-
-const SubmitButton = styled(Button)`
-  width: 100%;
-  margin-top: var(--spacing-medium);
-`;
-
-const LoginLink = styled.p`
-  text-align: center;
-  margin-top: var(--spacing-large);
-  color: #333333;
-  
-  a {
-    color: var(--primary-color);
-    text-decoration: underline;
-    
-    &:hover {
-      color: var(--secondary-color);
-    }
-  }
 `;
 
 function ResetPasswordPage() {
@@ -114,13 +59,13 @@ function ResetPasswordPage() {
       <ContentWrapper>
         <PageTitle>パスワードのリセット</PageTitle>
         
-        <ResetForm onSubmit={handleSubmit}>
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-          {success && <SuccessMessage>{success}</SuccessMessage>}
+        <CinemaForm onSubmit={handleSubmit}>
+          {error && <CinemaErrorMessage>{error}</CinemaErrorMessage>}
+          {success && <CinemaSuccessMessage>{success}</CinemaSuccessMessage>}
           
-          <FormGroup>
-            <Label htmlFor="email">メールアドレス:</Label>
-            <Input 
+          <CinemaFormGroup>
+            <CinemaLabel htmlFor="email">メールアドレス:</CinemaLabel>
+            <CinemaInput 
               type="email"
               id="email"
               value={email}
@@ -128,16 +73,16 @@ function ResetPasswordPage() {
               required
               placeholder="登録したメールアドレスを入力"
             />
-          </FormGroup>
+          </CinemaFormGroup>
           
-          <SubmitButton type="submit" disabled={loading}>
+          <CinemaSubmitButton type="submit" disabled={loading}>
             {loading ? "送信中..." : "パスワードをリセット"}
-          </SubmitButton>
+          </CinemaSubmitButton>
           
-          <LoginLink>
-            <Link to="/login">ログインページに戻る</Link>
-          </LoginLink>
-        </ResetForm>
+          <CinemaLinkText>
+            <Link to="/login" style={{color: '#ADD8E6', textDecoration: 'underline'}}>ログインページに戻る</Link>
+          </CinemaLinkText>
+        </CinemaForm>
       </ContentWrapper>
     </PageContainer>
   );

@@ -38,17 +38,18 @@ const BackButton = styled(CinemaButton)`
 const ReservationForm = styled.form`
   max-width: 600px;
   margin: 0 auto;
-  background-color: white;
+  background-color: #222222;
   padding: var(--spacing-large);
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: #333333;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  color: #f0f0f0;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 `;
 
 const MovieInfo = styled.div`
   margin-bottom: var(--spacing-large);
   padding-bottom: var(--spacing-large);
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #444;
 `;
 
 const FormGroup = styled.div`
@@ -59,32 +60,58 @@ const Label = styled.label`
   display: block;
   font-weight: bold;
   margin-bottom: var(--spacing-small);
-  color: #333333;
+  color: #FFD700;
+`;
+
+const SelectedSeatsBox = styled.div`
+  width: 100%;
+  padding: var(--spacing-medium);
+  background-color: #333333;
+  color: #f0f0f0;
+  border-radius: var(--border-radius);
+  border: 2px solid #FFD700;
+  font-size: var(--font-size-medium);
 `;
 
 const Input = styled.input`
   width: 100%;
   padding: var(--spacing-medium);
-  border: 2px solid #ccc;
+  border: 2px solid #FFD700;
   border-radius: var(--border-radius);
   font-size: var(--font-size-medium);
+  background-color: #333333;
+  color: #f0f0f0;
   
   &:focus {
-    border-color: var(--primary-color);
+    border-color: #FFD700;
     outline: none;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  }
+  
+  &::placeholder {
+    color: #999;
   }
 `;
 
 const Select = styled.select`
   width: 100%;
   padding: var(--spacing-medium);
-  border: 2px solid #ccc;
+  border: 2px solid #FFD700;
   border-radius: var(--border-radius);
   font-size: var(--font-size-medium);
+  background-color: #333333;
+  color: #f0f0f0;
   
   &:focus {
-    border-color: var(--primary-color);
+    border-color: #FFD700;
     outline: none;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  }
+  
+  &::-ms-expand {
+    background-color: transparent;
+    border: none;
+    color: #f0f0f0;
   }
 `;
 
@@ -96,6 +123,43 @@ const ErrorMessage = styled.p`
 const SubmitButton = styled(Button)`
   width: 100%;
   margin-top: var(--spacing-large);
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+  justify-content: space-between;
+`;
+
+const ActionButton = styled.button`
+  flex: 1;
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  border: 2px dashed #cc0000;
+  transition: all 0.2s;
+  
+  &.confirm {
+    background-color: #cc0000;
+    color: white;
+    
+    &:hover {
+      background-color: #aa0000;
+    }
+  }
+  
+  &.back {
+    background-color: #333333;
+    color: white;
+    
+    &:hover {
+      background-color: #555555;
+    }
+  }
 `;
 
 function ReservationPage() {
@@ -356,27 +420,30 @@ function ReservationPage() {
               
               <FormGroup>
                 <Label>選択した座席:</Label>
-                <div style={{ padding: '10px', backgroundColor: '#f0f7ff', borderRadius: '8px' }}>
-                  {selectedSeats.length > 0 ? selectedSeats.join(', ') : 'まだ座席が選択されていません'}
-                </div>
+                <SelectedSeatsBox>
+                  {selectedSeats.length > 0 ? (
+                    <span style={{ color: '#FFD700', fontWeight: 'bold' }}>{selectedSeats.join(', ')}</span>
+                  ) : (
+                    'まだ座席が選択されていません'
+                  )}
+                </SelectedSeatsBox>
               </FormGroup>
               
-              <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
-                <BackButton 
+              <ButtonContainer>
+                <ActionButton 
                   type="button" 
-                  className="secondary" 
+                  className="back" 
                   onClick={goToPreviousStep}
-                  style={{ flex: 1 }}
                 >
                   戻る
-                </BackButton>
-                <SubmitButton 
+                </ActionButton>
+                <ActionButton 
                   type="submit"
-                  style={{ flex: 2 }}
+                  className="confirm"
                 >
                   予約を確定する
-                </SubmitButton>
-              </div>
+                </ActionButton>
+              </ButtonContainer>
             </>
           )}
         </ReservationForm>

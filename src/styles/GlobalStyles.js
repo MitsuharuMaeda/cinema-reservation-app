@@ -142,28 +142,60 @@ const GlobalStyles = createGlobalStyle`
     border: 0;
   }
 
-  /* 白背景コンテナ用のスタイル */
+  /* 白背景コンテナを映画館風のグレー背景に変更 */
   .white-container {
-    background-color: white;
-    color: #333333;
+    background-color: #222222; /* グレー背景に変更 */
+    color: #f0f0f0; /* テキスト色を明るく */
     padding: var(--spacing-medium);
     border-radius: var(--border-radius);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.3); /* 映画館テーマの金色枠を追加 */
   }
   
   /* 入力フォーム要素全般 */
   input, select, textarea {
-    color: #333333;
+    background-color: #333333; /* 背景色をダークグレーに */
+    color: #f0f0f0; /* テキスト色を明るく */
+    border: 2px solid #444; /* ボーダー色をダークグレーに */
+    
+    &:focus {
+      border-color: #FFD700; /* フォーカス時の枠色を金色に */
+    }
     
     &::placeholder {
-      color: #888888;
+      color: #999; /* プレースホルダーの色を調整 */
     }
   }
   
   /* モーダルや白背景ダイアログ */
   .modal-content, .dialog {
-    background-color: white;
-    color: #333333;
+    background-color: #222222; /* グレー背景に変更 */
+    color: #f0f0f0; /* テキスト色を明るく */
+    border: 1px solid rgba(255, 215, 0, 0.3); /* 映画館テーマの金色枠を追加 */
+  }
+  
+  /* 左側の赤いバーを調整するために追加 */
+  [class*="ReservationCard"] {
+    background-color: #222222 !important;
+    color: #f0f0f0 !important;
+  }
+  
+  [class*="SearchForm"] {
+    background-color: #222222 !important;
+    color: #f0f0f0 !important;
+  }
+  
+  [class*="DetailLabel"] {
+    color: #FFD700 !important;
+    background-color: #383838 !important;
+  }
+  
+  [class*="DetailValue"] {
+    color: #f0f0f0 !important;
+  }
+  
+  [class*="MovieTitle"] {
+    color: #FFD700 !important;
   }
 `;
 

@@ -36,6 +36,7 @@ const HelpContent = styled.div`
   border: 2px solid var(--primary-color);
   border-radius: var(--border-radius);
   padding: var(--spacing-medium);
+  padding-top: calc(var(--spacing-medium) + 20px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-size: var(--font-size-small);
   color: #333333;
@@ -73,21 +74,29 @@ const CloseButton = styled.button`
   position: absolute;
   top: 5px;
   right: 5px;
-  background: none;
-  border: none;
-  font-size: 18px;
+  background-color: #cc0000;
+  color: white;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
   cursor: pointer;
-  color: #333333;
+  z-index: 100;
   
   &:hover {
-    color: var(--primary-color);
+    background-color: #aa0000;
   }
 `;
 
 const HelpTitle = styled.h4`
-  margin-top: 0;
+  margin-top: 5px;
   margin-bottom: var(--spacing-small);
   color: var(--primary-color);
+  padding-right: 20px;
 `;
 
 const HelpText = styled.div`

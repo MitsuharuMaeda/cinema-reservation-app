@@ -8,16 +8,19 @@ const SeatSelectorContainer = styled.div`
 const SeatSelectorTitle = styled.h3`
   margin-bottom: var(--spacing-medium);
   font-size: var(--font-size-medium);
+  color: #FFD700;
+  font-weight: bold;
 `;
 
 const ScreenArea = styled.div`
-  background-color: #ddd;
+  background-color: #444444;
   padding: var(--spacing-small);
   text-align: center;
   margin-bottom: var(--spacing-large);
   border-radius: var(--border-radius);
-  color: #666;
+  color: #FFD700;
   font-weight: bold;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 `;
 
 const SeatsContainer = styled.div`
@@ -48,13 +51,16 @@ const Seat = styled.button`
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  border: 2px solid #ccc;
+  border: 2px solid ${props => 
+    props.selected ? '#cc0000' : 
+    props.reserved ? '#999' : 
+    'white'};
   background-color: ${props => 
-    props.selected ? 'var(--primary-color)' : 
-    props.reserved ? '#f0f0f0' : 'white'};
+    props.selected ? '#cc0000' : 
+    props.reserved ? 'white' : '#333333'};
   color: ${props => 
     props.selected ? 'white' : 
-    props.reserved ? '#333' : '#000000'};
+    props.reserved ? '#777' : 'white'};
   cursor: ${props => props.reserved ? 'not-allowed' : 'pointer'};
   font-weight: bold;
   font-size: var(--font-size-medium);
@@ -62,7 +68,8 @@ const Seat = styled.button`
   
   &:hover {
     transform: ${props => props.reserved ? 'none' : 'scale(1.05)'};
-    box-shadow: ${props => props.reserved ? 'none' : '0 2px 5px rgba(0,0,0,0.1)'};
+    box-shadow: ${props => props.reserved ? 'none' : '0 2px 5px rgba(0,0,0,0.3)'};
+    border-color: ${props => props.reserved ? '#999' : props.selected ? '#cc0000' : '#FFD700'};
   }
   
   &:disabled {
@@ -76,6 +83,7 @@ const Legend = styled.div`
   justify-content: center;
   gap: var(--spacing-large);
   margin-bottom: var(--spacing-medium);
+  color: #f0f0f0;
 `;
 
 const LegendItem = styled.div`
@@ -88,23 +96,27 @@ const LegendSample = styled.div`
   width: 24px;
   height: 24px;
   border-radius: 4px;
-  background-color: ${props => props.color};
-  border: ${props => props.border ? '2px solid #ccc' : 'none'};
+  background-color: ${props => props.bgColor || props.color};
+  border: 2px solid ${props => props.border ? 'white' : props.bgColor === '#cc0000' ? '#cc0000' : '#999'};
 `;
 
 const SeatInfo = styled.div`
-  background-color: #f8f8f8;
+  background-color: #333333;
   padding: var(--spacing-medium);
   border-radius: var(--border-radius);
   margin-bottom: var(--spacing-medium);
+  color: #f0f0f0;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 `;
 
 const SeatSelectionSummary = styled.div`
   margin-top: var(--spacing-medium);
   padding: var(--spacing-medium);
-  background-color: #f0f7ff;
+  background-color: #333333;
   border-radius: var(--border-radius);
   font-size: var(--font-size-medium);
+  color: #f0f0f0;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 `;
 
 // アルファベットの配列（行を表す）
@@ -185,15 +197,15 @@ const SeatSelector = ({ onSeatsSelected, numberOfTickets, initialSelectedSeats =
       
       <Legend>
         <LegendItem>
-          <LegendSample border />
+          <LegendSample bgColor="#333333" border />
           <span>空席</span>
         </LegendItem>
         <LegendItem>
-          <LegendSample color="var(--primary-color)" />
+          <LegendSample bgColor="#cc0000" />
           <span>選択中</span>
         </LegendItem>
         <LegendItem>
-          <LegendSample color="#f0f0f0" />
+          <LegendSample bgColor="white" />
           <span>予約済</span>
         </LegendItem>
       </Legend>
@@ -229,9 +241,9 @@ const SeatSelector = ({ onSeatsSelected, numberOfTickets, initialSelectedSeats =
       
       {selectedSeats.length > 0 && (
         <SeatSelectionSummary>
-          <p>選択された座席: {selectedSeats.join(', ')}</p>
+          <p>選択された座席: <span style={{ color: '#FFD700', fontWeight: 'bold' }}>{selectedSeats.join(', ')}</span></p>
           {selectedSeats.length < numberOfTickets && (
-            <p>あと{numberOfTickets - selectedSeats.length}席選択できます</p>
+            <p>あと<span style={{ color: '#FFD700', fontWeight: 'bold' }}>{numberOfTickets - selectedSeats.length}</span>席選択できます</p>
           )}
         </SeatSelectionSummary>
       )}
