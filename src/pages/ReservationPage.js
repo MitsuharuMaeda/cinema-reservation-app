@@ -196,6 +196,7 @@ const ActionButton = styled.button`
 
 function ReservationPage() {
   const { movieId, showtimeId } = useParams();
+  console.log("ReservationPage - URL params:", { movieId, showtimeId });
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const [movie, setMovie] = useState(null);
@@ -371,54 +372,56 @@ function ReservationPage() {
           {currentStep === 1 && (
             <>
               <FormGroup>
-                <Label htmlFor="ticketType">
-                  チケットの種類: 
-                  <HelpTip title="チケットの種類">
-                    <p><strong>一般</strong>: 一般の方向けのチケット（1,800円）</p>
-                    <p><strong>シニア</strong>: 60歳以上の方向けの割引チケット（1,100円）</p>
-                    <p><strong>子供</strong>: 小学生以下のお子様向けの割引チケット（900円）</p>
-                  </HelpTip>
-                </Label>
+                <Label htmlFor="ticketType">チケットタイプ:</Label>
                 <Select 
-                  id="ticketType"
-                  name="ticketType"
-                  value={formData.ticketType}
+                  id="ticketType" 
+                  name="ticketType" 
+                  value={formData.ticketType} 
                   onChange={handleChange}
                 >
-                  <option value="regular">一般 (1,800円)</option>
-                  <option value="senior">シニア (1,100円)</option>
-                  <option value="child">子供 (900円)</option>
+                  <option value="regular">一般（1,800円）</option>
+                  <option value="senior">シニア（1,100円）</option>
+                  <option value="child">子供（900円）</option>
                 </Select>
               </FormGroup>
               
               <FormGroup>
-                <Label htmlFor="numberOfTickets">
-                  枚数:
-                  <HelpTip title="チケット枚数">
-                    <p>予約するチケットの枚数を選択してください。</p>
-                    <p>複数枚選択した場合は、その枚数分の座席を選ぶ必要があります。</p>
-                  </HelpTip>
-                </Label>
+                <Label htmlFor="numberOfTickets">チケット枚数:</Label>
                 <Select 
-                  id="numberOfTickets"
-                  name="numberOfTickets"
-                  value={formData.numberOfTickets}
+                  id="numberOfTickets" 
+                  name="numberOfTickets" 
+                  value={formData.numberOfTickets} 
                   onChange={handleChange}
                 >
-                  {[...Array(10)].map((_, i) => (
-                    <option key={i} value={i + 1}>{i + 1}</option>
+                  {[...Array(5)].map((_, i) => (
+                    <option key={i + 1} value={i + 1}>{i + 1}</option>
                   ))}
                 </Select>
               </FormGroup>
               
-              <SeatSelector 
-                onSeatsSelected={handleSeatsSelected} 
+              <SeatSelector
+                onSeatsSelected={handleSeatsSelected}
                 numberOfTickets={parseInt(formData.numberOfTickets)}
+                showtimeId={showtimeId}
               />
               
-              <SubmitButton type="button" onClick={goToNextStep}>
-                次へ進む
-              </SubmitButton>
+              <ButtonContainer>
+                <ActionButton 
+                  type="button" 
+                  className="back" 
+                  onClick={() => navigate(-1)}
+                >
+                  戻る
+                </ActionButton>
+                <ActionButton 
+                  type="button" 
+                  className="confirm" 
+                  onClick={goToNextStep}
+                  disabled={selectedSeats.length < parseInt(formData.numberOfTickets)}
+                >
+                  次へ進む
+                </ActionButton>
+              </ButtonContainer>
             </>
           )}
           

@@ -303,11 +303,14 @@ function ModifyReservationPage() {
         
         <FormGroup>
           <Label>座席選択:</Label>
-          <SeatSelector 
-            onSeatsSelected={handleSeatsSelected} 
-            numberOfTickets={parseInt(formData.numberOfTickets)}
-            initialSelectedSeats={originalReservation.selectedSeats || []}
-          />
+          {!loading && (
+            <SeatSelector
+              onSeatsSelected={handleSeatsSelected}
+              numberOfTickets={parseInt(formData.numberOfTickets)}
+              initialSelectedSeats={selectedSeats}
+              showtimeId={originalReservation?.showtimeId}
+            />
+          )}
           {errors.seats && <ErrorMessage>{errors.seats}</ErrorMessage>}
         </FormGroup>
         

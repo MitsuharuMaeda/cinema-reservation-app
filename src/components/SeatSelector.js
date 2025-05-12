@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from '../firebase/config';
 
 const SeatSelectorContainer = styled.div`
   margin: var(--spacing-large) 0;
@@ -124,7 +126,7 @@ const ROWS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 // 列数
 const COLS = 10;
 
-const SeatSelector = ({ onSeatsSelected, numberOfTickets, initialSelectedSeats = [] }) => {
+const SeatSelector = ({ onSeatsSelected, numberOfTickets, initialSelectedSeats = [], showtimeId }) => {
   // 初期選択座席を設定
   const [selectedSeats, setSelectedSeats] = useState(initialSelectedSeats);
   const [reservedSeats, setReservedSeats] = useState([]);
@@ -136,25 +138,80 @@ const SeatSelector = ({ onSeatsSelected, numberOfTickets, initialSelectedSeats =
     }
   }, [initialSelectedSeats]);
 
-  // ダミーの予約済み座席（実際はFirebaseから取得する）
+  // 上映時間に関連する予約済み座席をFirebaseから取得
   useEffect(() => {
-    // 約20%の座席をランダムに予約済みとしてマーク
-    const dummyReserved = [];
-    const totalSeats = ROWS.length * COLS;
-    const reservedCount = Math.floor(totalSeats * 0.2);
-    
-    for (let i = 0; i < reservedCount; i++) {
-      const row = ROWS[Math.floor(Math.random() * ROWS.length)];
-      const col = Math.floor(Math.random() * COLS) + 1;
-      const seatId = `${row}${col}`;
+    // showtimeIdがnullや空文字列の場合はランダムデータを使用
+    if (!showtimeId) {
+      console.log("showtimeIdが指定されていないため、ダミーデータを使用します");
+      const dummyReserved = [];
+      const totalSeats = ROWS.length * COLS;
+      const reservedCount = Math.floor(totalSeats * 0.2);
       
-      if (!dummyReserved.includes(seatId)) {
-        dummyReserved.push(seatId);
+      for (let i = 0; i < reservedCount; i++) {
+        const row = ROWS[Math.floor(Math.random() * ROWS.length)];
+        const col = Math.floor(Math.random() * COLS) + 1;
+        const seatId = `${row}${col}`;
+        
+        if (!dummyReserved.includes(seatId)) {
+          dummyReserved.push(seatId);
+        }
       }
+      
+      setReservedSeats(dummyReserved);
+      return;
     }
     
-    setReservedSeats(dummyReserved);
-  }, []);
+    console.log("showtimeId:", showtimeId, "初期座席:", initialSelectedSeats);
+    
+    const fetchReservedSeats = async () => {
+      try {
+        // この上映回に対する全ての予約を取得（ここでwhereのチェックを緩める）
+        const reservationsQuery = query(
+          collection(db, "reservations"),
+          where("showtimeId", "==", showtimeId)
+          // where("status", "!=", "cancelled") 条件を一時的に削除して確認
+        );
+        
+        const querySnapshot = await getDocs(reservationsQuery);
+        console.log("予約クエリ結果:", querySnapshot.size, "件の予約が見つかりました");
+        
+        // 予約済みの座席を集める
+        let allReservedSeats = [];
+        querySnapshot.forEach(doc => {
+          const reservation = doc.data();
+          console.log("予約データ:", doc.id, reservation);
+          
+          // 予約データに座席情報がある場合のみ処理
+          if (reservation.selectedSeats && Array.isArray(reservation.selectedSeats)) {
+            // 自分の選択した座席以外を予約済みとして追加
+            allReservedSeats = [...allReservedSeats, ...reservation.selectedSeats];
+          }
+        });
+        
+        // 重複を排除
+        allReservedSeats = [...new Set(allReservedSeats)];
+        
+        // 自分の選択した座席を除外
+        if (initialSelectedSeats && initialSelectedSeats.length > 0) {
+          allReservedSeats = allReservedSeats.filter(
+            seat => !initialSelectedSeats.includes(seat)
+          );
+        }
+        
+        console.log("取得した予約済み座席:", allReservedSeats);
+        setReservedSeats(allReservedSeats);
+      } catch (error) {
+        console.error("予約済み座席の取得に失敗しました", error);
+        // エラーログを詳細に出力
+        console.error("エラー詳細:", error.code, error.message);
+        
+        // ダミーデータを使用せず、エラーを表示
+        alert(`座席情報の取得に失敗しました: ${error.message}\nページを再読み込みしてください。`);
+      }
+    };
+    
+    fetchReservedSeats();
+  }, [showtimeId, initialSelectedSeats]);
 
   // 座席の選択/選択解除を処理
   const toggleSeat = (seatId) => {
