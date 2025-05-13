@@ -39,17 +39,17 @@ const VoiceButton = styled.button`
   }
 `;
 
-const VoiceControlPanel = styled.div`
-  position: absolute;
-  bottom: 70px;
-  right: 0;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-  padding: 20px;
-  width: 320px;
-  display: ${props => props.isOpen ? 'block' : 'none'};
-  border: 2px solid #0066cc;
+const SettingsPanel = styled.div`
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  background: white;
+  border: 2px solid #8B0000;
+  border-radius: 8px;
+  padding: 15px;
+  width: 300px;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 `;
 
 const VoiceControlTitle = styled.h3`
@@ -140,12 +140,29 @@ const ReadingProgress = styled.div`
 const AutoReadLabel = styled.label`
   display: flex;
   align-items: center;
-  font-size: 16px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #000000;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #cc0000;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
   font-weight: bold;
   
-  input {
-    margin-right: 10px;
-    transform: scale(1.5);
+  &:hover {
+    background-color: #ff0000;
   }
 `;
 
@@ -172,7 +189,7 @@ const getPageDescriptionText = (pathname) => {
 
 // 音声ガイドコンポーネント
 function VoiceGuide({ location }) {
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [rate, setRate] = useState(0.9);
   const [pitch, setPitch] = useState(1);
   const [isReading, setIsReading] = useState(false);
@@ -197,7 +214,7 @@ function VoiceGuide({ location }) {
   
   // パネルの表示/非表示を切り替える
   const togglePanel = () => {
-    setIsPanelOpen(!isPanelOpen);
+    setIsOpen(!isOpen);
   };
   
   // ページの説明を読み上げる
@@ -284,6 +301,12 @@ function VoiceGuide({ location }) {
     }
   };
   
+  // パネルを閉じる関数
+  const handleClose = () => {
+    setIsOpen(false);
+    console.log("閉じるボタンがクリックされました");
+  };
+  
   return (
     <VoiceGuideContainer>
       <VoiceButton 
@@ -297,67 +320,75 @@ function VoiceGuide({ location }) {
         </svg>
       </VoiceButton>
       
-      <VoiceControlPanel isOpen={isPanelOpen}>
-        <VoiceControlTitle>音声ガイド</VoiceControlTitle>
-        {isReading ? (
-          <>
-            <VoiceControlButton onClick={stopReading}>
-              ◼ 読み上げを停止する
-            </VoiceControlButton>
-            <ReadingProgress>
-              🔊 読み上げ中... 停止するには上のボタンをクリックしてください。
-            </ReadingProgress>
-          </>
-        ) : (
-          <>
-            <VoiceControlButton onClick={readPageDescription}>
-              📄 このページの内容を読み上げる
-            </VoiceControlButton>
-            <VoiceControlButton onClick={readOperationGuide}>
-              ℹ️ 操作方法を読み上げる
-            </VoiceControlButton>
-          </>
-        )}
-        
-        <VoiceSettingsGroup>
-          <VoiceSettingsLabel htmlFor="rate">
-            読み上げ速度: {rate}
-          </VoiceSettingsLabel>
-          <VoiceSettingsRange 
-            type="range" 
-            id="rate" 
-            min="0.5" 
-            max="1.5" 
-            step="0.1" 
-            value={rate} 
-            onChange={handleRateChange} 
-          />
+      {isOpen && (
+        <SettingsPanel>
+          <VoiceControlTitle>音声ガイド</VoiceControlTitle>
+          {isReading ? (
+            <>
+              <VoiceControlButton onClick={stopReading}>
+                ◼ 読み上げを停止する
+              </VoiceControlButton>
+              <ReadingProgress>
+                🔊 読み上げ中... 停止するには上のボタンをクリックしてください。
+              </ReadingProgress>
+            </>
+          ) : (
+            <>
+              <VoiceControlButton onClick={readPageDescription}>
+                📄 このページの内容を読み上げる
+              </VoiceControlButton>
+              <VoiceControlButton onClick={readOperationGuide}>
+                ℹ️ 操作方法を読み上げる
+              </VoiceControlButton>
+            </>
+          )}
           
-          <VoiceSettingsLabel htmlFor="pitch">
-            音の高さ: {pitch}
-          </VoiceSettingsLabel>
-          <VoiceSettingsRange 
-            type="range" 
-            id="pitch" 
-            min="0.5" 
-            max="1.5" 
-            step="0.1" 
-            value={pitch} 
-            onChange={handlePitchChange} 
-          />
+          <VoiceSettingsGroup>
+            <VoiceSettingsLabel htmlFor="rate">
+              読み上げ速度: {rate}
+            </VoiceSettingsLabel>
+            <VoiceSettingsRange 
+              type="range" 
+              id="rate" 
+              min="0.5" 
+              max="1.5" 
+              step="0.1" 
+              value={rate} 
+              onChange={handleRateChange} 
+            />
+            
+            <VoiceSettingsLabel htmlFor="pitch">
+              音の高さ: {pitch}
+            </VoiceSettingsLabel>
+            <VoiceSettingsRange 
+              type="range" 
+              id="pitch" 
+              min="0.5" 
+              max="1.5" 
+              step="0.1" 
+              value={pitch} 
+              onChange={handlePitchChange} 
+            />
+            
+            <div style={{ marginTop: '10px' }}>
+              <AutoReadLabel>
+                <input 
+                  type="checkbox" 
+                  checked={autoReadEnabled} 
+                  onChange={toggleAutoRead}
+                />
+                ページ移動時に自動読み上げ
+              </AutoReadLabel>
+            </div>
+          </VoiceSettingsGroup>
           
-          <div style={{ marginTop: '16px' }}>
-            <AutoReadLabel>
-              <input 
-                type="checkbox" 
-                checked={autoReadEnabled} 
-                onChange={toggleAutoRead}
-              />
-              ページ移動時に自動読み上げ
-            </AutoReadLabel>
-          </div>
-        </VoiceSettingsGroup>
-      </VoiceControlPanel>
+          <CloseButton 
+            onClick={handleClose} 
+            aria-label="閉じる">
+            ✕
+          </CloseButton>
+        </SettingsPanel>
+      )}
     </VoiceGuideContainer>
   );
 }
